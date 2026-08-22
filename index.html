@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Surprise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ 1. OPENING SCREEN ============ -->
+<section class="opening" id="opening">
+  <canvas id="stars-canvas"></canvas>
+  <div class="opening-content">
+    <p class="opening-line" id="opening-line1"></p>
+    <p class="opening-line secondary" id="opening-line2"></p>
+    <button class="enter-btn" id="enter-btn"></button>
+  </div>
+</section>
+
+<main id="main-content" hidden>
+
+  <!-- ============ 2. YES / NO GAME ============ -->
+  <section class="chapter" id="chapter-yesno">
+    <div class="chapter-inner">
+      <div class="yesno-box">
+        <p class="yesno-question" id="yesno-question"></p>
+        <div class="yesno-buttons">
+          <button class="btn-yes" id="btn-yes"></button>
+          <button class="btn-no" id="btn-no"></button>
+        </div>
+        <p class="yesno-message" id="yesno-message"></p>
+        <p class="yesno-success" id="yesno-success"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#C9A961" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 3. MEMORIES ============ -->
+  <section class="chapter" id="chapter-memories">
+    <div class="chapter-inner" style="max-width: 620px;">
+      <span class="eyebrow">MEMORIES</span>
+      <h2 class="chapter-title" id="memories-title"></h2>
+      <div class="memories-grid" id="memories-grid"></div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#C9A961" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 4. MUSIC ============ -->
+  <section class="chapter" id="chapter-music">
+    <div class="chapter-inner">
+      <span class="eyebrow">OUR SONG</span>
+      <h2 class="chapter-title" id="music-title"></h2>
+      <div class="music-card">
+        <button class="play-btn" id="play-btn" aria-label="تشغيل">
+          <svg id="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="music-info">
+          <p class="music-song" id="music-song"></p>
+          <p class="music-artist" id="music-artist"></p>
+          <div class="music-bar"><div class="music-bar-fill" id="music-bar-fill"></div></div>
+          <p class="music-desc" id="music-desc"></p>
+        </div>
+      </div>
+      <audio id="audio-el"></audio>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#C9A961" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 5. LETTERS ============ -->
+  <section class="chapter" id="chapter-letters">
+    <div class="chapter-inner">
+      <span class="eyebrow">LETTERS</span>
+      <h2 class="chapter-title" id="letters-title"></h2>
+      <div class="letters-row">
+        <button class="envelope" data-letter="letter01">
+          <span class="envelope-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M3 6l9 7 9-7"/></svg>
+          </span>
+          <span>
+            <span class="envelope-title" id="letter01-title" style="display:block;"></span>
+            <span class="envelope-sub">اضغط لفتح الخطاب</span>
+          </span>
+        </button>
+
+        <button class="envelope" id="envelope-02" data-letter="letter02">
+          <span class="envelope-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M3 6l9 7 9-7"/></svg>
+          </span>
+          <span>
+            <span class="envelope-title" id="letter02-title" style="display:block;"></span>
+            <span class="envelope-sub">اضغط لفتح الخطاب</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#C9A961" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 6. GIFT ============ -->
+  <section class="chapter" id="chapter-gift">
+    <div class="chapter-inner">
+      <span class="eyebrow">A GIFT</span>
+      <h2 class="chapter-title" id="gift-title"></h2>
+      <div class="gift-wrap">
+        <div class="gift-box" id="gift-box">
+          <div class="gift-progress" id="gift-progress"></div>
+          <div class="lid"></div>
+          <div class="ribbon"></div>
+          <div class="base"></div>
+        </div>
+        <p class="gift-hint">اضغط على الهدية لفتحها</p>
+        <div class="gift-message-box" id="gift-message-box">
+          <p id="gift-message"></p>
+          <p id="gift-reveal-message"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#C9A961" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 7. FINAL EXPERIENCE ============ -->
+  <section class="chapter final-chapter" id="chapter-final">
+    <div class="confetti-layer" id="confetti-layer"></div>
+    <div class="chapter-inner">
+
+      <div class="final-step active" id="final-step-1">
+        <p class="final-intro" id="final-intro"></p>
+        <button class="final-next-btn" data-next="final-step-2">التالي</button>
+      </div>
+
+      <div class="final-step" id="final-step-2">
+        <p class="happy-birthday" id="final-happy"></p>
+        <button class="final-next-btn" data-next="final-step-3">التالي</button>
+      </div>
+
+      <div class="final-step" id="final-step-3">
+        <p class="final-msg" id="final-msg-before-letter"></p>
+        <button class="enter-btn" id="open-final-letter-btn">افتحي الخطاب الأخير</button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ LETTER MODAL ============ -->
+<div class="letter-modal" id="letter-modal">
+  <div class="letter-paper">
+    <button class="letter-close" id="letter-close" aria-label="إغلاق">✕</button>
+    <p class="letter-heading" id="letter-modal-title"></p>
+    <div class="letter-body" id="letter-modal-body"></div>
+  </div>
+</div>
+
+<!-- ============ SECRET / EASTER EGG MODAL ============ -->
+<div class="secret-modal" id="secret-modal">
+  <div class="secret-card">
+    <span class="secret-label">رسالة سرية ✦</span>
+    <p class="secret-text" id="secret-text"></p>
+    <button class="secret-close" id="secret-close">إغلاق</button>
+  </div>
+</div>
+
+<div class="sparkle-layer" id="sparkle-layer"></div>
+
+<script src="content.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
