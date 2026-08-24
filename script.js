@@ -177,19 +177,40 @@
   }
 
   /* ============================================================
-     OPENING -> MAIN CONTENT TRANSITION
+     OPENING -> MAIN CONTENT TRANSITION (password gated)
      ============================================================ */
+  function enterSite() {
+    const opening = document.getElementById("opening");
+    const main = document.getElementById("main-content");
+    opening.style.transition = "opacity .7s ease";
+    opening.style.opacity = "0";
+    setTimeout(() => {
+      opening.style.display = "none";
+      main.hidden = false;
+      setupScrollReveal();
+    }, 700);
+  }
+
   function setupEnter() {
-    document.getElementById("enter-btn").addEventListener("click", () => {
-      const opening = document.getElementById("opening");
-      const main = document.getElementById("main-content");
-      opening.style.transition = "opacity .7s ease";
-      opening.style.opacity = "0";
-      setTimeout(() => {
-        opening.style.display = "none";
-        main.hidden = false;
-        setupScrollReveal();
-      }, 700);
+    const form = document.getElementById("password-form");
+    const input = document.getElementById("password-input");
+    const errorEl = document.getElementById("password-error");
+    const correct = String(content.opening.password || "").trim().toLowerCase();
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const val = input.value.trim().toLowerCase();
+      if (correct && val === correct) {
+        enterSite();
+        return;
+      }
+      errorEl.textContent = "الباسورد مش صح، جربي تاني 🔒";
+      errorEl.classList.add("show");
+      form.classList.remove("shake");
+      void form.offsetWidth;
+      form.classList.add("shake");
+      input.value = "";
+      input.focus();
     });
   }
 
@@ -306,34 +327,92 @@
   }
 
   /* ============================================================
+     TYPEWRITER EFFECT (used by every letter)
+     ============================================================ */
+  const typewriter = { timer: null, token: 0 };
+
+  function stopTypewriter() {
+    clearTimeout(typewriter.timer);
+    typewriter.token++;
+  }
+
+  function typeParagraphs(container, paragraphs) {
+    stopTypewriter();
+    const myToken = typewriter.token;
+    container.innerHTML = "";
+
+    if (prefersReducedMotion) {
+      paragraphs.forEach((para) => {
+        const p = document.createElement("p");
+        p.textContent = para;
+        container.appendChild(p);
+      });
+      return;
+    }
+
+    let pIndex = 0;
+    let cIndex = 0;
+    let currentP = null;
+
+    function step() {
+      if (myToken !== typewriter.token) return; // cancelled (modal closed / new letter opened)
+      if (pIndex >= paragraphs.length) return;
+
+      if (!currentP) {
+        currentP = document.createElement("p");
+        currentP.className = "typing";
+        container.appendChild(currentP);
+      }
+
+      const para = paragraphs[pIndex];
+      cIndex++;
+      currentP.textContent = para.slice(0, cIndex);
+
+      if (cIndex >= para.length) {
+        currentP.classList.remove("typing");
+        currentP = null;
+        pIndex++;
+        cIndex = 0;
+        typewriter.timer = setTimeout(step, 420); // pause between paragraphs
+      } else {
+        typewriter.timer = setTimeout(step, 26); // typing speed
+      }
+    }
+    step();
+  }
+
+  function openLetterModal(key) {
+    const modal = document.getElementById("letter-modal");
+    const titleEl = document.getElementById("letter-modal-title");
+    const bodyEl = document.getElementById("letter-modal-body");
+    const letter = content.letters[key];
+
+    titleEl.textContent = letter.title;
+    const paragraphs = String(letter.content).split("\n").filter((p) => p.trim().length);
+    modal.classList.add("open");
+    typeParagraphs(bodyEl, paragraphs);
+  }
+
+  /* ============================================================
      LETTERS MODAL + EASTER EGG 2 (double-click envelope 02)
      ============================================================ */
   function setupLetters() {
     const modal = document.getElementById("letter-modal");
-    const titleEl = document.getElementById("letter-modal-title");
-    const bodyEl = document.getElementById("letter-modal-body");
-
-    function openLetter(key) {
-      const letter = content.letters[key];
-      titleEl.textContent = letter.title;
-      bodyEl.innerHTML = "";
-      String(letter.content)
-        .split("\n")
-        .filter((p) => p.trim().length)
-        .forEach((para) => {
-          const p = document.createElement("p");
-          p.textContent = para;
-          bodyEl.appendChild(p);
-        });
-      modal.classList.add("open");
-    }
 
     document.querySelectorAll(".envelope").forEach((env) => {
-      env.addEventListener("click", () => openLetter(env.dataset.letter));
+      env.addEventListener("click", () => openLetterModal(env.dataset.letter));
     });
 
-    document.getElementById("letter-close").addEventListener("click", () => modal.classList.remove("open"));
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+    document.getElementById("letter-close").addEventListener("click", () => {
+      modal.classList.remove("open");
+      stopTypewriter();
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("open");
+        stopTypewriter();
+      }
+    });
 
     // easter egg 2: double-click on envelope 02
     const env02 = document.getElementById("envelope-02");
@@ -407,20 +486,7 @@
     });
 
     document.getElementById("open-final-letter-btn").addEventListener("click", () => {
-      const titleEl = document.getElementById("letter-modal-title");
-      const bodyEl = document.getElementById("letter-modal-body");
-      const letter = content.letters.finalLetter;
-      titleEl.textContent = letter.title;
-      bodyEl.innerHTML = "";
-      String(letter.content)
-        .split("\n")
-        .filter((p) => p.trim().length)
-        .forEach((para) => {
-          const p = document.createElement("p");
-          p.textContent = para;
-          bodyEl.appendChild(p);
-        });
-      document.getElementById("letter-modal").classList.add("open");
+      openLetterModal("finalLetter");
     });
   }
 

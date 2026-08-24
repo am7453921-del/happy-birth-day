@@ -2,26 +2,24 @@
 
 ## 1) عاين الموقع دلوقتي
 افتح ملف `index.html` بأي متصفح (دبل كليك عليه) وشوفه زي ما هيبقى بالظبط.
+الباسورد اللي هتدخل بيه: **malokty**
 
 ## 2) عدّل المحتوى
-افتح `content.js` بس. كل مكان مكتوب `(اكتب هنا)` استبدله بالنص. مفيش داعي تلمس أي ملف تاني.
+افتح `content.js` بس. كل مكان مكتوب `(اكتب هنا)` استبدله بالنص بتاعك.
+مفيش داعي تلمس أي ملف تاني (index.html / style.css / script.js).
 
 ## 3) ضيف الصور والأغنية
 - الصور: حطها جوه فولدر `images/` واكتب المسار في `content.js` (مثلاً `images/1.jpg`)
 - الأغنية: حطها جوه فولدر `audio/` واكتب المسار في `content.js` (مثلاً `audio/song.mp3`)
 
 ## 4) ارفعه على GitHub
-جهّز حساب GitHub وريبو (Private أفضل) زي ما اتفقنا، وبعدين من داخل فولدر المشروع:
+من صفحة الريبو، لكل ملف اتغيّر (content.js, index.html, style.css, script.js):
+- ادوس على اسم الملف
+- ادوس على أيقونة القلم (تعديل) فوق يمين
+- امسح القديم، الصق الجديد
+- Commit changes
 
-```
-git init
-git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin <رابط الريبو بتاعك>
-git push -u origin main
-```
+اللينك الحالي بتاع الموقع:
+`https://am7453921-del.github.io/happy-birth-day/`
 
-لو عايز تنشره كموقع فعلي بلينك تبعتهولها (مش مجرد ملفات)، أسهل حاجة **GitHub Pages** (مجاني):
-Settings → Pages → Source: اختار branch `main` → Save. هيديك لينك زي:
-`https://username.github.io/repo-name/`
+(الريبو دلوقتي Public عشان GitHub Pages تشتغل من غير اشتراك مدفوع — لو حبيت ترجعه Private تاني بعدين، هتحتاج تدفع اشتراك GitHub Pro عشان تفضل Pages شغالة، أو تفتح الموقع من على الجهاز مباشرة بدل اللينك.)
