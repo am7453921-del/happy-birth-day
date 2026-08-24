@@ -133,7 +133,7 @@
     function draw(t) {
       const w = canvas.offsetWidth, h = canvas.offsetHeight;
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#F6EFE3";
+      ctx.fillStyle = "#FFF3F6";
       stars.forEach((s) => {
         const twinkle = prefersReducedMotion ? 1 : 0.55 + 0.45 * Math.sin(t * s.speed + s.phase);
         ctx.globalAlpha = twinkle;
@@ -145,9 +145,9 @@
       if (bigStar) {
         const pulse = prefersReducedMotion ? 1 : 0.7 + 0.3 * Math.sin(t * 0.03);
         ctx.save();
-        ctx.shadowColor = "#C9A961";
-        ctx.shadowBlur = 12;
-        ctx.fillStyle = "#C9A961";
+        ctx.shadowColor = "#B347D9";
+        ctx.shadowBlur = 14;
+        ctx.fillStyle = "#B347D9";
         ctx.globalAlpha = pulse;
         ctx.beginPath();
         ctx.arc(bigStar.x, bigStar.y, bigStar.r, 0, Math.PI * 2);
@@ -263,7 +263,7 @@
   function burstSparkles() {
     if (prefersReducedMotion) return;
     const layer = document.getElementById("sparkle-layer");
-    const colors = ["#D9748A", "#C9A961", "#F6EFE3"];
+    const colors = ["#FF4D81", "#B347D9", "#FFF3F6"];
     for (let i = 0; i < 26; i++) {
       const s = document.createElement("div");
       const size = Math.random() * 6 + 4;
@@ -493,7 +493,7 @@
   function launchConfetti() {
     if (prefersReducedMotion) return;
     const layer = document.getElementById("confetti-layer");
-    const colors = ["#D9748A", "#C9A961", "#F6EFE3", "#8A93C4"];
+    const colors = ["#FF4D81", "#B347D9", "#FFF3F6", "#E01464"];
     for (let i = 0; i < 46; i++) {
       const piece = document.createElement("div");
       piece.className = "confetti-piece";
