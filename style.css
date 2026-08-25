@@ -81,6 +81,38 @@ html { scroll-behavior: smooth; }
   .blob { animation: none !important; }
 }
 
+/* ============================================================
+   FLOATING HEARTS — continuous, rising, whole page top-to-bottom
+   ============================================================ */
+.hearts-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.heart {
+  position: absolute;
+  bottom: -60px;
+  line-height: 1;
+  opacity: 0;
+  animation-name: floatHeart;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 2px 6px rgba(59, 18, 80, .15));
+}
+@keyframes floatHeart {
+  0%   { transform: translateY(0) translateX(0) rotate(-6deg) scale(.85); opacity: 0; }
+  10%  { opacity: .65; }
+  50%  { transform: translateY(-58vh) translateX(22px) rotate(10deg) scale(1); }
+  90%  { opacity: .55; }
+  100% { transform: translateY(-118vh) translateX(-18px) rotate(-8deg) scale(.9); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .heart { animation: none !important; opacity: .35; }
+}
+
 /* keep real content above the floating background */
 .opening, main, .letter-modal, .secret-modal, .sparkle-layer { position: relative; z-index: 1; }
 
