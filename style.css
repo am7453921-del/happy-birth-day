@@ -711,6 +711,38 @@ a:focus-visible,
   overflow: hidden;
 }
 
+#final-glow-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* soft pulsing warm halo behind the content — used in both dark sections */
+.glow-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 77, 129, .28) 0%, rgba(179, 71, 217, .16) 45%, transparent 72%);
+  filter: blur(8px);
+  animation: haloPulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+.opening-halo { top: 42%; }
+
+@keyframes haloPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: .85; }
+  50% { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-halo { animation: none !important; }
+  #final-glow-canvas { display: none; }
+}
+
 .final-step {
   display: none;
   text-align: center;

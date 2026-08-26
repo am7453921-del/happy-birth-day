@@ -177,6 +177,71 @@
   }
 
   /* ============================================================
+     FINAL CHAPTER — drifting warm glow orbs (distinct from stars/hearts)
+     ============================================================ */
+  function setupFinalGlow() {
+    const canvas = document.getElementById("final-glow-canvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let orbs = [];
+    const colors = ["255,77,129", "179,71,217", "255,182,217"]; // rose / violet / soft pink, as rgb triplets
+
+    function resize() {
+      canvas.width = canvas.offsetWidth * devicePixelRatio;
+      canvas.height = canvas.offsetHeight * devicePixelRatio;
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+      buildOrbs();
+    }
+
+    function buildOrbs() {
+      const w = canvas.offsetWidth, h = canvas.offsetHeight;
+      orbs = [];
+      const count = Math.min(16, Math.floor((w * h) / 26000));
+      for (let i = 0; i < count; i++) {
+        orbs.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 3 + 2,
+          color: colors[i % colors.length],
+          speed: Math.random() * 0.18 + 0.06,
+          sway: Math.random() * 20 + 10,
+          phase: Math.random() * Math.PI * 2,
+          baseX: 0
+        });
+        orbs[i].baseX = orbs[i].x;
+      }
+    }
+
+    function draw(t) {
+      const w = canvas.offsetWidth, h = canvas.offsetHeight;
+      ctx.clearRect(0, 0, w, h);
+      orbs.forEach((o) => {
+        o.y -= o.speed;
+        if (o.y < -10) { o.y = h + 10; o.baseX = Math.random() * w; }
+        const x = prefersReducedMotion ? o.baseX : o.baseX + Math.sin(t * 0.0006 + o.phase) * o.sway;
+        const glow = prefersReducedMotion ? 1 : 0.6 + 0.4 * Math.sin(t * 0.0018 + o.phase);
+        ctx.save();
+        ctx.shadowColor = `rgba(${o.color}, ${glow})`;
+        ctx.shadowBlur = 14;
+        ctx.fillStyle = `rgba(${o.color}, ${glow * 0.9})`;
+        ctx.beginPath();
+        ctx.arc(x, o.y, o.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+      if (!prefersReducedMotion) requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    if (prefersReducedMotion) {
+      draw(0);
+    } else {
+      requestAnimationFrame(draw);
+    }
+  }
+
+  /* ============================================================
      OPENING -> MAIN CONTENT TRANSITION (password gated)
      ============================================================ */
   function enterSite() {
@@ -526,6 +591,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     injectContent();
     setupStars();
+    setupFinalGlow();
     setupEnter();
     setupYesNo();
     setupMusic();
