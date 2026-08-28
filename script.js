@@ -61,11 +61,12 @@
       }
 
       const locationHtml = isPlaceholder(item.location) ? "" : `<div class="memory-location">${item.location}</div>`;
+      const dateHtml = isPlaceholder(item.date) ? "" : `<div class="memory-date">${item.date}</div>`;
 
       card.innerHTML = `
         ${photoHtml}
         <div class="memory-meta">
-          <div class="memory-date">${item.date}</div>
+          ${dateHtml}
           ${locationHtml}
           <div class="memory-caption">${item.caption}</div>
         </div>
