@@ -56,6 +56,18 @@
 
 <main id="main-content" hidden>
 
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat">
+      <span class="stat-number" id="stat-days">0</span>
+      <span class="stat-label" id="stat-days-label"></span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-number" id="stat-birthday-count"></span>
+      <span class="stat-label" id="stat-birthday-label"></span>
+    </div>
+  </div>
+
   <!-- ============ 2. YES / NO GAME ============ -->
   <section class="chapter" id="chapter-yesno">
     <div class="chapter-inner">
@@ -186,6 +198,16 @@
   </section>
 
 </main>
+
+<!-- ============ PROGRESS DOTS ============ -->
+<nav class="progress-dots" id="progress-dots" aria-hidden="true">
+  <span class="dot" data-target="chapter-yesno"></span>
+  <span class="dot" data-target="chapter-memories"></span>
+  <span class="dot" data-target="chapter-music"></span>
+  <span class="dot" data-target="chapter-letters"></span>
+  <span class="dot" data-target="chapter-gift"></span>
+  <span class="dot" data-target="chapter-final"></span>
+</nav>
 
 <!-- ============ LETTER MODAL ============ -->
 <div class="letter-modal" id="letter-modal">

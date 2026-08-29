@@ -243,6 +243,72 @@
   }
 
   /* ============================================================
+     STATS BAR — animated days-together counter
+     ============================================================ */
+  function setupStatsBar() {
+    const daysEl = document.getElementById("stat-days");
+    const daysLabelEl = document.getElementById("stat-days-label");
+    const bdayNumEl = document.getElementById("stat-birthday-count");
+    const bdayLabelEl = document.getElementById("stat-birthday-label");
+    const cfg = content.counter;
+    if (!cfg || isPlaceholder(cfg.loveDate)) return;
+
+    daysLabelEl.textContent = cfg.daysLabel;
+    bdayNumEl.textContent = cfg.birthdayCountNumber;
+    bdayLabelEl.textContent = cfg.birthdayCountLabel;
+
+    const loveDate = new Date(cfg.loveDate + "T00:00:00");
+    const today = new Date();
+    const totalDays = Math.max(0, Math.floor((today - loveDate) / 86400000));
+
+    if (prefersReducedMotion) {
+      daysEl.textContent = totalDays;
+      return;
+    }
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      daysEl.textContent = Math.floor(eased * totalDays);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ============================================================
+     PROGRESS DOTS — highlight current chapter, click to jump
+     ============================================================ */
+  function setupProgressDots() {
+    const dots = document.querySelectorAll(".progress-dots .dot");
+    if (!dots.length) return;
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const target = document.getElementById(dot.dataset.target);
+        if (target) target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+      });
+    });
+
+    if (!("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            dots.forEach((d) => d.classList.toggle("active", d.dataset.target === id));
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    dots.forEach((dot) => {
+      const section = document.getElementById(dot.dataset.target);
+      if (section) io.observe(section);
+    });
+  }
+
+  /* ============================================================
      OPENING -> MAIN CONTENT TRANSITION (password gated)
      ============================================================ */
   function enterSite() {
@@ -254,6 +320,8 @@
       opening.style.display = "none";
       main.hidden = false;
       setupScrollReveal();
+      setupStatsBar();
+      setupProgressDots();
     }, 700);
   }
 
