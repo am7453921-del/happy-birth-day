@@ -836,8 +836,100 @@ a:focus-visible,
 }
 
 /* ============================================================
-   STATS BAR — days together + birthday count
+   MINI-GAMES — shared bits
    ============================================================ */
+.game-sub {
+  text-align: center;
+  font-size: .92rem;
+  color: var(--charcoal);
+  opacity: .75;
+  margin-bottom: 1.75rem;
+}
+.game-success {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(10px) scale(.95);
+  transition: opacity .5s var(--ease), transform .5s var(--bounce);
+}
+.game-success.show { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ---------- Catch Hearts Game ---------- */
+.catch-hud {
+  text-align: center;
+  font-weight: 700;
+  color: var(--rose-deep);
+  margin-bottom: .85rem;
+  font-size: 1.05rem;
+}
+.catch-field {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.catch-start-btn { position: relative; z-index: 2; animation: btnPulse 2.6s ease-in-out infinite; }
+.catch-field.playing .catch-start-btn { display: none; }
+
+.catch-heart {
+  position: absolute;
+  top: -10%;
+  font-size: 1.9rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  animation-name: catchFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  filter: drop-shadow(0 2px 5px rgba(59,18,80,.2));
+}
+@keyframes catchFall {
+  from { top: -10%; }
+  to { top: 108%; }
+}
+.catch-heart.caught {
+  animation: none !important;
+  transition: transform .25s var(--bounce), opacity .25s var(--ease);
+  transform: scale(1.8);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .catch-heart { animation: none !important; }
+}
+
+/* ---------- Photo Puzzle Game ---------- */
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: min(320px, 82vw);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--paper-dark);
+}
+.puzzle-tile {
+  background-size: 300% 300%;
+  cursor: pointer;
+  transition: transform .2s var(--bounce), filter .2s ease, outline-color .2s ease;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+.puzzle-tile:hover { filter: brightness(1.08); }
+.puzzle-tile.selected { outline-color: var(--gold); transform: scale(.94); }
+.puzzle-grid.solved .puzzle-tile { outline: none; }
 .stats-bar {
   position: relative;
   z-index: 1;

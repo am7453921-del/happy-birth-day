@@ -85,12 +85,45 @@
 
   <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#B347D9" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
 
+  <!-- ============ 2.5 CATCH HEARTS GAME ============ -->
+  <section class="chapter" id="chapter-catch">
+    <div class="chapter-inner">
+      <span class="eyebrow">A LITTLE GAME</span>
+      <h2 class="chapter-title" id="catch-title"></h2>
+      <p class="game-sub" id="catch-sub"></p>
+      <div class="catch-game">
+        <div class="catch-hud">
+          <span id="catch-score">0</span> / <span id="catch-target">15</span> ❤
+        </div>
+        <div class="catch-field" id="catch-field">
+          <button class="enter-btn catch-start-btn" id="catch-start-btn"></button>
+        </div>
+        <p class="game-success" id="catch-success"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#B347D9" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
   <!-- ============ 3. MEMORIES ============ -->
   <section class="chapter" id="chapter-memories">
     <div class="chapter-inner" style="max-width: 620px;">
       <span class="eyebrow">MEMORIES</span>
       <h2 class="chapter-title" id="memories-title"></h2>
       <div class="memories-grid" id="memories-grid"></div>
+    </div>
+  </section>
+
+  <div class="thread"><svg viewBox="0 0 20 90"><path d="M10 0 Q 20 20 10 40 Q 0 60 10 90" fill="none" stroke="#B347D9" stroke-width="2" stroke-dasharray="4 5"/></svg></div>
+
+  <!-- ============ 3.5 PHOTO PUZZLE GAME ============ -->
+  <section class="chapter" id="chapter-puzzle">
+    <div class="chapter-inner">
+      <span class="eyebrow">PUZZLE TIME</span>
+      <h2 class="chapter-title" id="puzzle-title"></h2>
+      <p class="game-sub" id="puzzle-sub"></p>
+      <div class="puzzle-grid" id="puzzle-grid"></div>
+      <p class="game-success" id="puzzle-success"></p>
     </div>
   </section>
 
@@ -202,7 +235,9 @@
 <!-- ============ PROGRESS DOTS ============ -->
 <nav class="progress-dots" id="progress-dots" aria-hidden="true">
   <span class="dot" data-target="chapter-yesno"></span>
+  <span class="dot" data-target="chapter-catch"></span>
   <span class="dot" data-target="chapter-memories"></span>
+  <span class="dot" data-target="chapter-puzzle"></span>
   <span class="dot" data-target="chapter-music"></span>
   <span class="dot" data-target="chapter-letters"></span>
   <span class="dot" data-target="chapter-gift"></span>

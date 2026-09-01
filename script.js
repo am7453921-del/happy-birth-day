@@ -21,6 +21,13 @@
     document.getElementById("memories-title").textContent = content.memories.sectionTitle;
     renderMemories();
 
+    document.getElementById("catch-title").textContent = content.catchGame.title;
+    document.getElementById("catch-sub").textContent = content.catchGame.subtitle;
+    document.getElementById("catch-start-btn").textContent = content.catchGame.startButton;
+
+    document.getElementById("puzzle-title").textContent = content.puzzle.title;
+    document.getElementById("puzzle-sub").textContent = content.puzzle.subtitle;
+
     document.getElementById("music-title").textContent = content.music.sectionTitle;
     document.getElementById("music-song").textContent = content.music.songTitle;
     document.getElementById("music-artist").textContent = content.music.artist;
@@ -243,6 +250,150 @@
   }
 
   /* ============================================================
+     CATCH HEARTS GAME
+     ============================================================ */
+  function setupCatchGame() {
+    const field = document.getElementById("catch-field");
+    const startBtn = document.getElementById("catch-start-btn");
+    const scoreEl = document.getElementById("catch-score");
+    const successEl = document.getElementById("catch-success");
+    if (!field || !startBtn) return;
+
+    const target = 15;
+    const heartChars = ["❤", "💗", "💕"];
+    const heartColors = ["#FF4D81", "#B347D9", "#E01464"];
+    let score = 0;
+    let spawnTimer = null;
+    let finished = false;
+
+    function spawnHeart() {
+      if (finished) return;
+      const heart = document.createElement("span");
+      heart.className = "catch-heart";
+      heart.textContent = heartChars[Math.floor(Math.random() * heartChars.length)];
+      heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+      heart.style.left = Math.random() * 84 + "%";
+
+      if (prefersReducedMotion) {
+        heart.style.top = Math.random() * 80 + 5 + "%";
+      } else {
+        const duration = 3.2 + Math.random() * 2.2;
+        heart.style.animationDuration = duration + "s";
+        heart.addEventListener("animationend", () => {
+          if (heart.isConnected) heart.remove();
+        });
+      }
+
+      heart.addEventListener("click", () => catchHeart(heart));
+      heart.addEventListener("touchstart", (e) => { e.preventDefault(); catchHeart(heart); }, { passive: false });
+      field.appendChild(heart);
+    }
+
+    function catchHeart(heart) {
+      if (finished || !heart.isConnected) return;
+      heart.classList.add("caught");
+      setTimeout(() => heart.remove(), 260);
+      score++;
+      scoreEl.textContent = score;
+      if (score >= target) endGame();
+    }
+
+    function endGame() {
+      finished = true;
+      clearInterval(spawnTimer);
+      field.querySelectorAll(".catch-heart").forEach((h) => h.remove());
+      successEl.textContent = content.catchGame.successMessage;
+      successEl.classList.add("show");
+      burstSparkles();
+    }
+
+    startBtn.addEventListener("click", () => {
+      field.classList.add("playing");
+      spawnTimer = setInterval(spawnHeart, 650);
+      spawnHeart();
+    });
+  }
+
+  /* ============================================================
+     PHOTO PUZZLE GAME
+     ============================================================ */
+  function setupPuzzleGame() {
+    const grid = document.getElementById("puzzle-grid");
+    const successEl = document.getElementById("puzzle-success");
+    if (!grid) return;
+    const photo = content.puzzle.photo;
+    if (isPlaceholder(photo)) return;
+
+    const size = 3;
+    const total = size * size;
+    let currentOrder = [];
+    let selectedSlot = null;
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function isSolved() {
+      return currentOrder.every((piece, slot) => piece === slot);
+    }
+
+    function positionForPiece(piece) {
+      const col = piece % size, row = Math.floor(piece / size);
+      return `${(col * 100) / (size - 1)}% ${(row * 100) / (size - 1)}%`;
+    }
+
+    function render() {
+      grid.innerHTML = "";
+      grid.classList.remove("solved");
+      currentOrder.forEach((piece, slot) => {
+        const tile = document.createElement("div");
+        tile.className = "puzzle-tile";
+        tile.dataset.slot = slot;
+        tile.style.backgroundImage = `url(${photo})`;
+        tile.style.backgroundPosition = positionForPiece(piece);
+        tile.addEventListener("click", () => handleTileClick(slot));
+        grid.appendChild(tile);
+      });
+    }
+
+    function handleTileClick(slot) {
+      if (isSolved()) return;
+      const tiles = grid.querySelectorAll(".puzzle-tile");
+      if (selectedSlot === null) {
+        selectedSlot = slot;
+        tiles[slot].classList.add("selected");
+        return;
+      }
+      if (selectedSlot === slot) {
+        tiles[slot].classList.remove("selected");
+        selectedSlot = null;
+        return;
+      }
+      // swap pieces between selectedSlot and slot
+      [currentOrder[selectedSlot], currentOrder[slot]] = [currentOrder[slot], currentOrder[selectedSlot]];
+      tiles[selectedSlot].classList.remove("selected");
+      selectedSlot = null;
+      render();
+      if (isSolved()) {
+        grid.classList.add("solved");
+        successEl.textContent = content.puzzle.successMessage;
+        successEl.classList.add("show");
+        burstSparkles();
+      }
+    }
+
+    currentOrder = [...Array(total).keys()];
+    do {
+      shuffle(currentOrder);
+    } while (isSolved());
+    render();
+  }
+
+  /* ============================================================
      STATS BAR — animated days-together counter
      ============================================================ */
   function setupStatsBar() {
@@ -322,6 +473,8 @@
       setupScrollReveal();
       setupStatsBar();
       setupProgressDots();
+      setupCatchGame();
+      setupPuzzleGame();
     }, 700);
   }
 
